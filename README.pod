@@ -96,10 +96,6 @@ L<https://github.com/dagolden/dist-zilla-plugin-removephasedprereqs>
 
 David Golden <dagolden@cpan.org>
 
-=head1 CONTRIBUTOR
-
-Ricardo Signes <rjbs@cpan.org>
-
 =head1 COPYRIGHT AND LICENSE
 
 This software is Copyright (c) 2013 by David Golden.
