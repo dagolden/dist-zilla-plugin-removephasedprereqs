@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 package Dist::Zilla::Plugin::RemovePhasedPrereqs;
-# ABSTRACT: No abstract given for Dist::Zilla::Plugin::RemovePhasedPrereqs
+# ABSTRACT: Remove gathered prereqs from particular phases
 # VERSION
 
 use Moose;
@@ -15,25 +15,6 @@ use Moose::Autobox;
 
 use MooseX::Types::Moose qw(ArrayRef);
 use MooseX::Types::Perl  qw(ModuleName);
-
-=head1 SYNOPSIS
-
-In your F<dist.ini>:
-
-  [RemovePrereqs]
-  remove = Foo::Bar
-  remove = MRO::Compat
-
-This will remove any prerequisite of any type from any prereq phase.  This is
-useful for eliminating incorrectly detected prereqs.
-
-=head1 SEE ALSO
-
-Dist::Zilla plugins:
-L<Prereqs|Dist::Zilla::Plugin::Prereqs>,
-L<AutoPrereqs|Dist::Zilla::Plugin::AutoPrereqs>.
-
-=cut
 
 my @phases = qw(configure build test runtime develop);
 
@@ -82,7 +63,7 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 SYNOPSIS
 
-In dist.ini:
+In F<dist.ini>:
 
     [RemovePhasedPrereqs]
     remove_runtime = Foo
@@ -90,11 +71,11 @@ In dist.ini:
 
 =head1 DESCRIPTION
 
-This module is similar to L<Dist::Zilla::Plugin::RemovePrereqs> except it
-lets you specify which requirements section to remove from instead of
-removing from all.
+This module is adapted from L<Dist::Zilla::Plugin::RemovePrereqs> to let you
+specify particular requirements sections to remove from instead of removing
+from all of them.
 
-Valid keys are:
+Valid configuration options are:
 
 =for :list
 * remove_build
@@ -103,13 +84,17 @@ Valid keys are:
 * remove_runtime
 * remove_test
 
-=head1 USAGE
+These may be used more than once to remove multiple modules.
 
-Good luck!
+Modules are removed from all types within a section (e.g. "requires",
+"recommends", "suggests", etc.).
 
 =head1 SEE ALSO
 
-Maybe other modules do related things.
+=for :list
+* L<Dist::Zilla::Plugin::Prereqs>
+* L<Dist::Zilla::Plugin::AutoPrereqs>
+* L<Dist::Zilla::Plugin::RemovePrereqs>
 
 =cut
 
