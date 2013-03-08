@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More 0.88;
+use Test::More 0.96;
 
 # Adapted from Dist::Zilla t/plugins/prereqs.t by Ricardo Signes
 
@@ -9,7 +9,7 @@ use lib 't/lib';
 use JSON 2;
 use Test::DZil;
 
-{
+subtest 'all phases' => sub {
     my $tzil = Builder->from_config(
         { dist_root => 'corpus/DZT' },
         {
@@ -56,7 +56,43 @@ use Test::DZil;
         },
         "prereqs merged and pruned",
     );
-}
+};
+
+subtest 'only one phase' => sub {
+    my $tzil = Builder->from_config(
+        { dist_root => 'corpus/DZT' },
+        {
+            add_files => {
+                'source/dist.ini' => simple_ini(
+                    #<<< No perltidy
+                    [ GatherDir => ],
+                    [ MetaJSON  => ],
+                    [ Prereqs   => => { A => 1, Z => 1 } ],
+                    [
+                        RemovePhasedPrereqs => {
+                            remove_runtime      => [qw(Z)],
+                        }
+                    ],
+                    ##>>>
+                ),
+            },
+        },
+    );
+
+    $tzil->build;
+
+    my $json = $tzil->slurp_file('build/META.json');
+
+    my $meta = JSON->new->decode($json);
+
+    is_deeply(
+        $meta->{prereqs},
+        {
+            runtime     => { requires   => { A => 1 } },
+        },
+        "prereqs merged and pruned",
+    );
+};
 
 done_testing;
 

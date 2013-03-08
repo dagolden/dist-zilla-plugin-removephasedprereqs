@@ -27,7 +27,7 @@ sub mvp_multivalue_args { values %attr_map }
 has [ values %attr_map ] => (
   is  => 'ro',
   isa => ArrayRef[ ModuleName ],
-  required => 1,
+  default => sub { [] },
 );
 
 around dump_config => sub {
