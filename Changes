@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-RemovePhasedPrereqs
 
 {{$NEXT}}
 
+0.002     2013-03-07 20:39:03 America/New_York
+
     [FIXED]
 
     - Accidentally required *all* phases to remove something.  Now
